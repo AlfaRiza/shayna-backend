@@ -13,7 +13,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th class="serial">#</th>
                                     <th>Name</th>
                                     <th>Type</th>
                                     <th>Price</th>
@@ -24,12 +24,12 @@
                             <tbody>
                             @forelse($items as $item)
                                 <tr>
-                                    <th>{{ $item->id }}</th>
-                                    <th>{{ $item->name }}</th>
-                                    <th>{{ $item->type }}</th>
-                                    <th>{{ $item->price }}</th>
-                                    <th>{{ $item->quantity }}</th>
-                                    <th>
+                                    <td>{{ $item->id }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->type }}</td>
+                                    <td>{{ $item->price }}</td>
+                                    <td>{{ $item->quantity }}</td>
+                                    <td>
                                         <a href="#" class="btn btn-info btn-sm"><i class="fa fa-picture-o"></i></a>
                                         <a href="{{ route('product.edit', $item->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
                                         <form action="{{ route('product.destroy', $item->id) }}" method="POST" class="d-inline">
@@ -39,7 +39,7 @@
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
-                                    </th>
+                                    </td>
                                 </tr>
                                 @empty
                                     <tr>
