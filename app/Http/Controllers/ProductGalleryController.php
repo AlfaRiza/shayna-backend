@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductGalleryRequest;
+use App\Models\Product;
 use App\Models\ProductGallery;
-use App\Http\Requests\ProductRequest;
 
-class ProductController extends Controller
+class ProductGalleryController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -27,8 +26,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $items = Product::all();
-        return view('pages.products.index', ['items'=> $items]);
+        $items = ProductGallery::with('product')->get();
+        return view('pages.product-galleries.index', compact('items'));
     }
 
     /**
@@ -38,7 +37,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('pages.products.create');
+        $products = Product::all();
+        return view('pages.product-galleries.create', compact('products'));
     }
 
     /**
@@ -47,13 +47,14 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductRequest $request)
+    public function store(ProductGalleryRequest $request)
     {
         $data = $request->all();
-        $data['slug'] = Str::slug($request->name);
-
-        Product::create($data);
-        return redirect()->route('product.index')->with('success', 'Data barang berhasil ditambah');
+        $data['photo'] = $request->file('photo')->store(
+            'assets/product', 'public'
+        );
+        ProductGallery::create($data);
+        return redirect()->route('product-galleries.index')->with('success', 'Data barang berhasil ditambah');
     }
 
     /**
@@ -75,9 +76,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
-        
-        return view('pages.products.edit', compact('product'));
+        //
     }
 
     /**
@@ -87,14 +86,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductRequest $request, $id)
+    public function update(ProductGalleryRequest $request, $id)
     {
-        $data = $request->all();
-        $data['slug'] = Str::slug($request->name);
-
-        $item = Product::findOrFail($id);
-        $item->update($data);
-        return redirect()->route('product.index')->with('success', 'Data barang berhasil ditambah');
+        //
     }
 
     /**
@@ -105,21 +99,10 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $item = Product::findOrFail($id);
+        $item = ProductGallery::findOrFail($id);
+
 
         $item->delete();
-
-        ProductGallery::where('product_id', $id)->delete();
-        return redirect()->route('product.index')->with('success', 'Delete barang berhasil');
-    }
-
-    public function gallery(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
-        $items = ProductGallery::with('product')
-                ->where('product_id', $id)
-                ->get();
-
-        return view('pages.products.gallery', compact('product', 'items'));
+        return redirect()->route('product-galleries.index')->with('success', 'Delete barang berhasil');
     }
 }

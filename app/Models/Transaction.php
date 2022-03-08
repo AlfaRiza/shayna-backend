@@ -6,25 +6,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+class Transaction extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'uuid',
         'name',
-        'type',
-        'description',
-        'price',
-        'slug',
-        'quantity'
+        'email',
+        'number',
+        'address',
+        'transaction_total',
+        'transaction_status'
     ];
 
     protected $hidden = [
 
     ];
 
-    public function galleries()
+    public function details()
     {
-        return $this->hasMany(ProductGallery::class);
+        return $this->hasMany(TransactionDetail::class);
     }
 }

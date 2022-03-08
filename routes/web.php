@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductGalleryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +19,7 @@ use App\Http\Controllers\ProductController;
 
 Route::get('/', [DashboardController::class, 'index']);
 Route::resource('product', ProductController::class);
+Route::get('/product/{id}/gallery', [ProductController::class, 'gallery'])->name('product.gallery');
+
+Route::resource('product-galleries', ProductGalleryController::class);
 Auth::routes(['register' => false]);
