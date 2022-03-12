@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductGalleryController;
+use App\Http\Controllers\TransactionController;
+use App\Models\Transaction;
+use Illuminate\Database\Events\TransactionCommitted;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +25,7 @@ Route::resource('product', ProductController::class);
 Route::get('/product/{id}/gallery', [ProductController::class, 'gallery'])->name('product.gallery');
 
 Route::resource('product-galleries', ProductGalleryController::class);
+
+Route::post('transaction/{id}/status', [TransactionController::class, 'setStatus'])->name('transaction.status');
+Route::resource('transaction', TransactionController::class);
 Auth::routes(['register' => false]);

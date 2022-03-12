@@ -26,7 +26,7 @@ class ProductGalleryController extends Controller
      */
     public function index()
     {
-        $items = ProductGallery::with('product')->get();
+        $items = ProductGallery::with('product')->latest()->get();
         return view('pages.product-galleries.index', compact('items'));
     }
 
